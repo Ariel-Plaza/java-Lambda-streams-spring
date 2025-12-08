@@ -8,6 +8,8 @@ import com.aluracursos.screenmatch.service.ConsumoAPI;
 import com.aluracursos.screenmatch.service.ConvierteDatos;
 
 import java.sql.SQLOutput;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -94,6 +96,27 @@ public class Principal {
         //muestra la lista
         System.out.println("*** Lista episodios ***");
         episodios.forEach(System.out::println);
+
+        //Busqueda de episodios a partir de x año
+        System.out.println("Por favor indica el año a partir del cual deseas ver los episodios");
+        var fecha = teclado.nextInt();
+        teclado.nextLine();
+
+        //Formateador fecha
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        //fecha de busqueda parte desde el dia y mes 1
+        LocalDate fechaBusqueda = LocalDate.of(fecha, 1,1);
+        episodios.stream()
+                //filtra episodio por fecha de lanzamiento que no sea nula y que muestre los que estan despues fecha busqueda
+                .filter(e -> e.getFechaDeLanzamiento() != null && e.getFechaDeLanzamiento().isAfter(fechaBusqueda))
+                //bucle para imprimir los episodios
+                .forEach(e -> System.out.println(
+                        "Temporada " + e.getTemporada() +
+                                "Episodio " + e.getTitulo() +
+                                //format da formato de fecha
+                                "Fecha de Lanzamiento " + e.getFechaDeLanzamiento().format(dtf)
+                ));
 
     }
 }
