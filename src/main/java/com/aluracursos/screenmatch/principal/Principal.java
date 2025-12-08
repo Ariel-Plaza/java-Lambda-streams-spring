@@ -74,8 +74,13 @@ public class Principal {
         datosEpisodios.stream()
                 //filtra por evaluacion que sea diferenta a N/A
                 .filter(e ->!e.evaluacion().equalsIgnoreCase("N/A"))
+                .peek(e -> System.out.println("Primer filtro (N/A)" + e))
                 //ordena y compara cada una de las evaluaciones de los episodios  y los da vuelta de Mayor a Menor
                 .sorted(Comparator.comparing(DatosEpisodio::evaluacion).reversed())
+                .peek(e -> System.out.println("Segundo filtro ordenacion (M>m)" + e))
+                .map(e -> e.titulo().toUpperCase())
+                .peek(e -> System.out.println("Tercer filtro (m>M)" + e))
+
                 //limita a 5 elementos
                 .limit(5)
                 //en un bucle los va imprimiendo.
@@ -95,10 +100,10 @@ public class Principal {
 
         //muestra la lista
         System.out.println("*** Lista episodios ***");
-        episodios.forEach(System.out::println);
+//        episodios.forEach(System.out::println);
 
         //Busqueda de episodios a partir de x año
-        System.out.println("Por favor indica el año a partir del cual deseas ver los episodios");
+//        System.out.println("Por favor indica el año a partir del cual deseas ver los episodios");
         var fecha = teclado.nextInt();
         teclado.nextLine();
 
@@ -107,16 +112,16 @@ public class Principal {
 
         //fecha de busqueda parte desde el dia y mes 1
         LocalDate fechaBusqueda = LocalDate.of(fecha, 1,1);
-        episodios.stream()
-                //filtra episodio por fecha de lanzamiento que no sea nula y que muestre los que estan despues fecha busqueda
-                .filter(e -> e.getFechaDeLanzamiento() != null && e.getFechaDeLanzamiento().isAfter(fechaBusqueda))
-                //bucle para imprimir los episodios
-                .forEach(e -> System.out.println(
-                        "Temporada " + e.getTemporada() +
-                                "Episodio " + e.getTitulo() +
-                                //format da formato de fecha
-                                "Fecha de Lanzamiento " + e.getFechaDeLanzamiento().format(dtf)
-                ));
+//        episodios.stream()
+//                //filtra episodio por fecha de lanzamiento que no sea nula y que muestre los que estan despues fecha busqueda
+//                .filter(e -> e.getFechaDeLanzamiento() != null && e.getFechaDeLanzamiento().isAfter(fechaBusqueda))
+//                //bucle para imprimir los episodios
+//                .forEach(e -> System.out.println(
+//                        "Temporada " + e.getTemporada() +
+//                                "Episodio " + e.getTitulo() +
+//                                //format da formato de fecha
+//                                "Fecha de Lanzamiento " + e.getFechaDeLanzamiento().format(dtf)
+//                ));
 
     }
 }
