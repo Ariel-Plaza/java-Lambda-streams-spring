@@ -40,14 +40,15 @@ public class Principal {
 
         //Mostrars solo el titulo de los episodios de las temporadas
         //Itera la lista de la temporadas, para traer los episodios
-        for (int i = 0; i < datos.totalDeTemporadas() ; i++) {
-            List<DatosEpisodio> episodioTemporada = temporadas.get(i).episodios();
-            //Itera lista de episodios y obtener el titulo
-            for (int j = 0; j < episodioTemporada.size(); j++) {
-                System.out.println(episodioTemporada.get(j).titulo());
-
-            }
-
-        }
+//        for (int i = 0; i < datos.totalDeTemporadas() ; i++) {
+//            List<DatosEpisodio> episodioTemporada = temporadas.get(i).episodios();
+//            //Itera lista de episodios y obtener el titulo
+//            for (int j = 0; j < episodioTemporada.size(); j++) {
+//                System.out.println(episodioTemporada.get(j).titulo());
+//
+//            }
+//        }
+        //funcion lambda
+        temporadas.forEach(t -> t.episodios().forEach(e-> System.out.println(e.titulo())));
     }
 }
