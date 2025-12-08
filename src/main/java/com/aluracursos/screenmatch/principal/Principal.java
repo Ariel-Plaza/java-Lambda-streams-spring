@@ -7,8 +7,10 @@ import com.aluracursos.screenmatch.service.ConsumoAPI;
 import com.aluracursos.screenmatch.service.ConvierteDatos;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Principal {
     private Scanner teclado = new Scanner(System.in);
@@ -49,6 +51,30 @@ public class Principal {
 //            }
 //        }
         //funcion lambda
-        temporadas.forEach(t -> t.episodios().forEach(e-> System.out.println(e.titulo())));
+//        temporadas.forEach(t -> t.episodios().forEach(e-> System.out.println(e.titulo())));
+
+        //Convertir toda la informacion a una lista del tipo DatosEpisodio
+        //Crea variable datosEpisodios que guarda lista de episodios, convierte lista temporadas(tiene Lista<DatosEpisodio>
+        // en un stream
+        List<DatosEpisodio> datosEpisodios = temporadas.stream()
+                //t es un 'DatosTemporadas' // t.episodios() metodo retorna List<DatosEpisodio>
+                .flatMap(t -> t.episodios()
+                        //convierte lista en 'Steam<DatosEpisodio>'
+                        .stream())
+                //flatMap junto todos los stream
+                //Guarda en una lista
+                .collect(Collectors.toList());
+
+        //Top 5 episodios
+
+        datosEpisodios.stream()
+                //filtra por evaluacion que sea diferenta a N/A
+                .filter(e ->!e.evaluacion().equalsIgnoreCase("N/A"))
+                //ordena y compara cada una de las evaluaciones de los episodios  y los da vuelta de Mayor a Menor
+                .sorted(Comparator.comparing(DatosEpisodio::evaluacion).reversed())
+                //limita a 5 elementos
+                .limit(5)
+                //en un bucle los va imprimiendo.
+                .forEach(System.out::println);
     }
 }

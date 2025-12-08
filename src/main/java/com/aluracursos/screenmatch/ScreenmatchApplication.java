@@ -24,11 +24,11 @@ public class ScreenmatchApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-//        Principal principal = new Principal();
-//        principal.muestraElMenu();
+        Principal principal = new Principal();
+        principal.muestraElMenu();
 
-        EjemploStreams ejemploStreams = new EjemploStreams();
-        ejemploStreams.muestraEjemplo();
+//        EjemploStreams ejemploStreams = new EjemploStreams();
+//        ejemploStreams.muestraEjemplo();
 
 
 ////        System.out.println("Prueba desde Spring");
