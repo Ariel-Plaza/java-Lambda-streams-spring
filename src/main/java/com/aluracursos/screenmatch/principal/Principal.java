@@ -1,5 +1,6 @@
 package com.aluracursos.screenmatch.principal;
 
+import com.aluracursos.screenmatch.model.DatosEpisodio;
 import com.aluracursos.screenmatch.model.DatosSerie;
 import com.aluracursos.screenmatch.model.DatosTemporadas;
 import com.aluracursos.screenmatch.service.ConsumoAPI;
@@ -26,7 +27,7 @@ public class Principal {
         //Creacion lista con datos temporadas
         List<DatosTemporadas> temporadas = new ArrayList<>();
         //bucle se repite hasta el totalTemporadas
-        for (int i = 1; i < datos.totalDeTemporadas(); i++) {
+        for (int i = 1; i <= datos.totalDeTemporadas(); i++) {
             //consumo de api, por temporada de cada serie aumenta en cada bucle
             var jsonTemporadas = consumoAPI.obtenerDatos(URL_BASE + nombreSerie.replace(" ", "+") + "&Season="+ i+ API_KEY );
             //convierte datos de API a datos de la clase temporada
@@ -35,6 +36,18 @@ public class Principal {
             temporadas.add(datosTemporadas);
         }
         //imprime los datos de cada temporada por separado
-        temporadas.forEach(System.out::println);
+//        temporadas.forEach(System.out::println);
+
+        //Mostrars solo el titulo de los episodios de las temporadas
+        //Itera la lista de la temporadas, para traer los episodios
+        for (int i = 0; i < datos.totalDeTemporadas() ; i++) {
+            List<DatosEpisodio> episodioTemporada = temporadas.get(i).episodios();
+            //Itera lista de episodios y obtener el titulo
+            for (int j = 0; j < episodioTemporada.size(); j++) {
+                System.out.println(episodioTemporada.get(j).titulo());
+
+            }
+
+        }
     }
 }
