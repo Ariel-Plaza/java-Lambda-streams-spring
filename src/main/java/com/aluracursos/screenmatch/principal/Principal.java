@@ -3,9 +3,11 @@ package com.aluracursos.screenmatch.principal;
 import com.aluracursos.screenmatch.model.DatosEpisodio;
 import com.aluracursos.screenmatch.model.DatosSerie;
 import com.aluracursos.screenmatch.model.DatosTemporadas;
+import com.aluracursos.screenmatch.model.Episodio;
 import com.aluracursos.screenmatch.service.ConsumoAPI;
 import com.aluracursos.screenmatch.service.ConvierteDatos;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -66,7 +68,7 @@ public class Principal {
                 .collect(Collectors.toList());
 
         //Top 5 episodios
-
+        System.out.println("TOP 5");
         datosEpisodios.stream()
                 //filtra por evaluacion que sea diferenta a N/A
                 .filter(e ->!e.evaluacion().equalsIgnoreCase("N/A"))
@@ -76,5 +78,22 @@ public class Principal {
                 .limit(5)
                 //en un bucle los va imprimiendo.
                 .forEach(System.out::println);
+
+
+        //Convirtienedo los datos a una lista del tipo episodio
+        //Variable en base a Episodio que pone en stream temporadas
+        List<Episodio> episodios = temporadas.stream()
+                //obtiene de datos temporadas los episodios y los pone en stream
+                .flatMap(t -> t.episodios().stream()
+                        //mapea cada episodio y crea un nuevo dato numero episodio que corresponde a la temporada
+                      //agrega los datos del episodio: titulo, n episopdio, eval, fecha lanzamiento
+                        .map(d -> new Episodio(t.numero(),d)))
+                //convierte en una lista
+                .collect(Collectors.toList());
+
+        //muestra la lista
+        System.out.println("*** Lista episodios ***");
+        episodios.forEach(System.out::println);
+
     }
 }
