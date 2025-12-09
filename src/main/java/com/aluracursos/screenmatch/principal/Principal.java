@@ -10,10 +10,7 @@ import com.aluracursos.screenmatch.service.ConvierteDatos;
 import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Principal {
@@ -60,28 +57,33 @@ public class Principal {
         //Convertir toda la informacion a una lista del tipo DatosEpisodio
         //Crea variable datosEpisodios que guarda lista de episodios, convierte lista temporadas(tiene Lista<DatosEpisodio>
         // en un stream
-        List<DatosEpisodio> datosEpisodios = temporadas.stream()
-                //t es un 'DatosTemporadas' // t.episodios() metodo retorna List<DatosEpisodio>
-                .flatMap(t -> t.episodios()
-                        //convierte lista en 'Steam<DatosEpisodio>'
-                        .stream())
-                //flatMap junto todos los stream
-                //Guarda en una lista
-                .collect(Collectors.toList());
-
-        //Top 5 episodios
-        System.out.println("TOP 5");
-        datosEpisodios.stream()
-                //filtra por evaluacion que sea diferenta a N/A
-                .filter(e ->!e.evaluacion().equalsIgnoreCase("N/A"))
-                //ordena y compara cada una de las evaluaciones de los episodios  y los da vuelta de Mayor a Menor
-                .sorted(Comparator.comparing(DatosEpisodio::evaluacion).reversed())
-                //limita a 5 elementos
-                .limit(5)
-                //en un bucle los va imprimiendo.
-                .forEach(System.out::println);
-
-
+//        List<DatosEpisodio> datosEpisodios = temporadas.stream()
+//                //t es un 'DatosTemporadas' // t.episodios() metodo retorna List<DatosEpisodio>
+//                .flatMap(t -> t.episodios()
+//                        //convierte lista en 'Steam<DatosEpisodio>'
+//                        .stream())
+//                //flatMap junto todos los stream
+//                //Guarda en una lista
+//                .collect(Collectors.toList());
+//
+//        //Top 5 episodios
+//        System.out.println("TOP 5");
+//        datosEpisodios.stream()
+//                //filtra por evaluacion que sea diferenta a N/A
+//                .filter(e ->!e.evaluacion().equalsIgnoreCase("N/A"))
+//                .peek(e -> System.out.println("Primer filtro (N/A)" + e))
+//                //ordena y compara cada una de las evaluaciones de los episodios  y los da vuelta de Mayor a Menor
+//                .sorted(Comparator.comparing(DatosEpisodio::evaluacion).reversed())
+//                .peek(e -> System.out.println("Segundo filtro ordenacion (M>m)" + e))
+//                .map(e -> e.titulo().toUpperCase())
+//                .peek(e -> System.out.println("Tercer filtro (m>M)" + e))
+//
+//                //limita a 5 elementos
+//                .limit(5)
+//                //en un bucle los va imprimiendo.
+//                .forEach(System.out::println);
+//
+//
         //Convirtienedo los datos a una lista del tipo episodio
         //Variable en base a Episodio que pone en stream temporadas
         List<Episodio> episodios = temporadas.stream()
@@ -94,29 +96,56 @@ public class Principal {
                 .collect(Collectors.toList());
 
         //muestra la lista
-        System.out.println("*** Lista episodios ***");
-        episodios.forEach(System.out::println);
+//        System.out.println("*** Lista episodios ***");
+//        episodios.forEach(System.out::println);
 
         //Busqueda de episodios a partir de x año
-        System.out.println("Por favor indica el año a partir del cual deseas ver los episodios");
-        var fecha = teclado.nextInt();
-        teclado.nextLine();
+//        System.out.println("Por favor indica el año a partir del cual deseas ver los episodios");
+//        var fecha = teclado.nextInt();
+//        teclado.nextLine();
+//
+//        //Formateador fecha
+//        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//
+//        //fecha de busqueda parte desde el dia y mes 1
+//        LocalDate fechaBusqueda = LocalDate.of(fecha, 1,1);
+////        episodios.stream()
+////                //filtra episodio por fecha de lanzamiento que no sea nula y que muestre los que estan despues fecha busqueda
+////                .filter(e -> e.getFechaDeLanzamiento() != null && e.getFechaDeLanzamiento().isAfter(fechaBusqueda))
+////                //bucle para imprimir los episodios
+////                .forEach(e -> System.out.println(
+////                        "Temporada " + e.getTemporada() +
+////                                "Episodio " + e.getTitulo() +
+////                                //format da formato de fecha
+////                                "Fecha de Lanzamiento " + e.getFechaDeLanzamiento().format(dtf)
+//                ));
 
-        //Formateador fecha
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//        //Busca episodios por pedazo del titulo
+//        System.out.println("Ingresa el titulo del episodio que desea ver: ");
+//        var pedazoTitulo = teclado.nextLine();
+//        Optional<Episodio> episodioBuscado = episodios.stream()
+//                .filter(e -> e.getTitulo().toUpperCase().contains(pedazoTitulo.toUpperCase()))
+//                .findFirst();
+//        if(episodioBuscado.isPresent()){
+//            System.out.println("Episodio encontrado");
+//            System.out.println("Los datos son: " + episodioBuscado.get());
+//        }else{
+//            System.out.println("Episodio no encontrado");
+//        }
 
-        //fecha de busqueda parte desde el dia y mes 1
-        LocalDate fechaBusqueda = LocalDate.of(fecha, 1,1);
-        episodios.stream()
-                //filtra episodio por fecha de lanzamiento que no sea nula y que muestre los que estan despues fecha busqueda
-                .filter(e -> e.getFechaDeLanzamiento() != null && e.getFechaDeLanzamiento().isAfter(fechaBusqueda))
-                //bucle para imprimir los episodios
-                .forEach(e -> System.out.println(
-                        "Temporada " + e.getTemporada() +
-                                "Episodio " + e.getTitulo() +
-                                //format da formato de fecha
-                                "Fecha de Lanzamiento " + e.getFechaDeLanzamiento().format(dtf)
-                ));
+        //analisiss de datos
 
+        Map<Integer, Double> evaluacionesPorTemporada = episodios.stream()
+                .filter(e ->e.getEvaluacion() > 0.0)
+                .collect(Collectors.groupingBy(Episodio::getTemporada, Collectors.averagingDouble(Episodio::getEvaluacion)));
+        System.out.println(evaluacionesPorTemporada);
+//permite generar de forma prestablecida estadisticas
+        DoubleSummaryStatistics est = episodios.stream()
+                .filter(e ->e.getEvaluacion() > 0.0)
+                .collect(Collectors.summarizingDouble(Episodio::getEvaluacion));
+        System.out.println(est);
+        System.out.println("Media de las evaluaciones: " + est.getAverage());
+        System.out.println("Episodio Mejor evaluado: " + est.getMax());
+        System.out.println("Episodio pero evaluado: " + est.getMin());
     }
 }
