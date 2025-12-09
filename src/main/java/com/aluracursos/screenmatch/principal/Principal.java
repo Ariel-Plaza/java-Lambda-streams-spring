@@ -10,10 +10,7 @@ import com.aluracursos.screenmatch.service.ConvierteDatos;
 import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Principal {
@@ -99,29 +96,42 @@ public class Principal {
                 .collect(Collectors.toList());
 
         //muestra la lista
-        System.out.println("*** Lista episodios ***");
+//        System.out.println("*** Lista episodios ***");
 //        episodios.forEach(System.out::println);
 
         //Busqueda de episodios a partir de x año
 //        System.out.println("Por favor indica el año a partir del cual deseas ver los episodios");
-        var fecha = teclado.nextInt();
-        teclado.nextLine();
-
-        //Formateador fecha
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-        //fecha de busqueda parte desde el dia y mes 1
-        LocalDate fechaBusqueda = LocalDate.of(fecha, 1,1);
-//        episodios.stream()
-//                //filtra episodio por fecha de lanzamiento que no sea nula y que muestre los que estan despues fecha busqueda
-//                .filter(e -> e.getFechaDeLanzamiento() != null && e.getFechaDeLanzamiento().isAfter(fechaBusqueda))
-//                //bucle para imprimir los episodios
-//                .forEach(e -> System.out.println(
-//                        "Temporada " + e.getTemporada() +
-//                                "Episodio " + e.getTitulo() +
-//                                //format da formato de fecha
-//                                "Fecha de Lanzamiento " + e.getFechaDeLanzamiento().format(dtf)
+//        var fecha = teclado.nextInt();
+//        teclado.nextLine();
+//
+//        //Formateador fecha
+//        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+//
+//        //fecha de busqueda parte desde el dia y mes 1
+//        LocalDate fechaBusqueda = LocalDate.of(fecha, 1,1);
+////        episodios.stream()
+////                //filtra episodio por fecha de lanzamiento que no sea nula y que muestre los que estan despues fecha busqueda
+////                .filter(e -> e.getFechaDeLanzamiento() != null && e.getFechaDeLanzamiento().isAfter(fechaBusqueda))
+////                //bucle para imprimir los episodios
+////                .forEach(e -> System.out.println(
+////                        "Temporada " + e.getTemporada() +
+////                                "Episodio " + e.getTitulo() +
+////                                //format da formato de fecha
+////                                "Fecha de Lanzamiento " + e.getFechaDeLanzamiento().format(dtf)
 //                ));
+
+        //Busca episodios por pedazo del titulo
+        System.out.println("Ingresa el titulo del episodio que desea ver: ");
+        var pedazoTitulo = teclado.nextLine();
+        Optional<Episodio> episodioBuscado = episodios.stream()
+                .filter(e -> e.getTitulo().toUpperCase().contains(pedazoTitulo.toUpperCase()))
+                .findFirst();
+        if(episodioBuscado.isPresent()){
+            System.out.println("Episodio encontrado");
+            System.out.println("Los datos son: " + episodioBuscado.get());
+        }else{
+            System.out.println("Episodio no encontrado");
+        }
 
     }
 }
