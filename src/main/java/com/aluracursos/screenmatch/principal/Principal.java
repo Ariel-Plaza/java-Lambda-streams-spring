@@ -57,33 +57,33 @@ public class Principal {
         //Convertir toda la informacion a una lista del tipo DatosEpisodio
         //Crea variable datosEpisodios que guarda lista de episodios, convierte lista temporadas(tiene Lista<DatosEpisodio>
         // en un stream
-        List<DatosEpisodio> datosEpisodios = temporadas.stream()
-                //t es un 'DatosTemporadas' // t.episodios() metodo retorna List<DatosEpisodio>
-                .flatMap(t -> t.episodios()
-                        //convierte lista en 'Steam<DatosEpisodio>'
-                        .stream())
-                //flatMap junto todos los stream
-                //Guarda en una lista
-                .collect(Collectors.toList());
-
-        //Top 5 episodios
-        System.out.println("TOP 5");
-        datosEpisodios.stream()
-                //filtra por evaluacion que sea diferenta a N/A
-                .filter(e ->!e.evaluacion().equalsIgnoreCase("N/A"))
-                .peek(e -> System.out.println("Primer filtro (N/A)" + e))
-                //ordena y compara cada una de las evaluaciones de los episodios  y los da vuelta de Mayor a Menor
-                .sorted(Comparator.comparing(DatosEpisodio::evaluacion).reversed())
-                .peek(e -> System.out.println("Segundo filtro ordenacion (M>m)" + e))
-                .map(e -> e.titulo().toUpperCase())
-                .peek(e -> System.out.println("Tercer filtro (m>M)" + e))
-
-                //limita a 5 elementos
-                .limit(5)
-                //en un bucle los va imprimiendo.
-                .forEach(System.out::println);
-
-
+//        List<DatosEpisodio> datosEpisodios = temporadas.stream()
+//                //t es un 'DatosTemporadas' // t.episodios() metodo retorna List<DatosEpisodio>
+//                .flatMap(t -> t.episodios()
+//                        //convierte lista en 'Steam<DatosEpisodio>'
+//                        .stream())
+//                //flatMap junto todos los stream
+//                //Guarda en una lista
+//                .collect(Collectors.toList());
+//
+//        //Top 5 episodios
+//        System.out.println("TOP 5");
+//        datosEpisodios.stream()
+//                //filtra por evaluacion que sea diferenta a N/A
+//                .filter(e ->!e.evaluacion().equalsIgnoreCase("N/A"))
+//                .peek(e -> System.out.println("Primer filtro (N/A)" + e))
+//                //ordena y compara cada una de las evaluaciones de los episodios  y los da vuelta de Mayor a Menor
+//                .sorted(Comparator.comparing(DatosEpisodio::evaluacion).reversed())
+//                .peek(e -> System.out.println("Segundo filtro ordenacion (M>m)" + e))
+//                .map(e -> e.titulo().toUpperCase())
+//                .peek(e -> System.out.println("Tercer filtro (m>M)" + e))
+//
+//                //limita a 5 elementos
+//                .limit(5)
+//                //en un bucle los va imprimiendo.
+//                .forEach(System.out::println);
+//
+//
         //Convirtienedo los datos a una lista del tipo episodio
         //Variable en base a Episodio que pone en stream temporadas
         List<Episodio> episodios = temporadas.stream()
@@ -120,18 +120,26 @@ public class Principal {
 ////                                "Fecha de Lanzamiento " + e.getFechaDeLanzamiento().format(dtf)
 //                ));
 
-        //Busca episodios por pedazo del titulo
-        System.out.println("Ingresa el titulo del episodio que desea ver: ");
-        var pedazoTitulo = teclado.nextLine();
-        Optional<Episodio> episodioBuscado = episodios.stream()
-                .filter(e -> e.getTitulo().toUpperCase().contains(pedazoTitulo.toUpperCase()))
-                .findFirst();
-        if(episodioBuscado.isPresent()){
-            System.out.println("Episodio encontrado");
-            System.out.println("Los datos son: " + episodioBuscado.get());
-        }else{
-            System.out.println("Episodio no encontrado");
-        }
+//        //Busca episodios por pedazo del titulo
+//        System.out.println("Ingresa el titulo del episodio que desea ver: ");
+//        var pedazoTitulo = teclado.nextLine();
+//        Optional<Episodio> episodioBuscado = episodios.stream()
+//                .filter(e -> e.getTitulo().toUpperCase().contains(pedazoTitulo.toUpperCase()))
+//                .findFirst();
+//        if(episodioBuscado.isPresent()){
+//            System.out.println("Episodio encontrado");
+//            System.out.println("Los datos son: " + episodioBuscado.get());
+//        }else{
+//            System.out.println("Episodio no encontrado");
+//        }
+
+        //analisiss de datos
+
+        Map<Integer, Double> evaluacionesPorTemporada = episodios.stream()
+                .filter(e ->e.getEvaluacion() > 0.0)
+                .collect(Collectors.groupingBy(Episodio::getTemporada, Collectors.averagingDouble(Episodio::getEvaluacion)));
+        System.out.println(evaluacionesPorTemporada);
+
 
     }
 }
